@@ -1,48 +1,105 @@
 #pragma once
 
 #include "Graph.h"
-/** klasa reprezentująca spojny graf losowy, z przypisanymi wagami*/
-class ConnectedWeightedGraph : public Graph
+#include <iostream>
+struct node
 {
+	typedef char name_type;
+	typedef unsigned id_type;
+	typedef unsigned distance_type;
+	typedef char source_node_type;
+	name_type name; //symbolic name of node
+	id_type id; //position in deque
+	distance_type distance; //distance source
+	source_node_type sourceNode; //prevous node width shortest path
+	
+};
+
+bool distanceLess(const node a, const node b);
+
+
+
+/** klasa reprezentująca spojny graf losowy, z przypisanymi wagami*/
+class GraphConnectedWeighted : public Graph
+{
+	friend std::ostream & operator<<(std::ostream & o, const GraphConnectedWeighted & graph);
 public:
 	//zadanie 3.1
 
-	ConnectedWeightedGraph(int ** adjacencyMatrix, const size_type nodes);
+	GraphConnectedWeighted(int ** adjacencyMatrix, const size_type nodes);
+
 	/** konstruktor generuje graf w sposob losowy albo G(n,l) lub G(n,p)
 		jak w zadaniu 1.3
 		\param n ilosc wierzcholkow
 		\param l ilosc krawedzi
-		*/
-	ConnectedWeightedGraph(const size_type n, const size_type l);
+	*/
+	GraphConnectedWeighted(const size_type n, const size_type l);
+
 	/**
-	\param n ilosc wierzcholkow
-	\param p procentowa liczba krawedzi*/
-	ConnectedWeightedGraph(const size_type n, const float p);
+		\param n ilosc wierzcholkow
+		\param p procentowa liczba krawedzi*/
+	GraphConnectedWeighted(const size_type n, const float p);
+
 	/** Default destructor */
-	virtual ~ConnectedWeightedGraph();
+	virtual ~GraphConnectedWeighted();
+
+
+	size_type getNumberNodes() const
+	{
+		return _numberNodes;
+	}
+
+	const int * operator[](size_type i) const
+	{
+		return _adjacencyMatrix[i];
+	}
 
 	/* funkcja tworzy dokument LaTeX z graficzna reprezentacja grafu */
 	void toLatex() const override;
 
-
+	/**
+	  * zadanie 3.2 algorytm Dijkstry
+	  * @param source source node from which the Dijkstra algorithm is calculated
+	  * @param resultArray array in wich the result is written
+	  */
+	void dijkstra(size_type source, int * resultArray = nullptr) const;
 
 	//zadanie 3.3
 	/** \brief obliczanie macierzy odleglosci dla wszystkich wierzcholkow przy pomocy
-	*   algorytmu dijkstry
-	*   \return macierz odleglosci
+	*   algorytmu dijkstra
+	*  \return macierz odleglosci
 	*/
-	int **  distanceMatrix() const;
+	void  distanceMatrix() const;
+
+	void printDistanceMatrix() const;
+
+	/**
+	  * zadanie 3.4
+	  */
+	int GraphCenter(void) const;
+
+	int GraphCenterMinMax(void) const;
+
+	/**
+	  *	zadanie 3.5 
+	  */
+	void minimalSpanningTree() const;
+	
 
 protected:
 	/** dwuwymiarowa symetryczna macierz przechowujaca polaczenia
-	pomiedzy wierzcholkami
-	przykladowa reprezentacja
-	0 1 0 3
-	1 0 2 0
-	0 2 0 4
-	3 0 4 0
-	wartosc liczby oznacza wage krawedzi*/
+	  * pomiedzy wierzcholkami
+	  * przykladowa reprezentacja
+	  * 0 1 0 3
+	  * 1 0 2 0
+	  * 0 2 0 4
+	  * 3 0 4 0
+	  * wartosc liczby oznacza wage krawedzi
+	  */
 	const size_type _numberNodes;
 	int ** _adjacencyMatrix;
-
+	mutable int ** _distanceMatrix;
 };
+
+
+std::ostream & operator<<(std::ostream & o, const GraphConnectedWeighted & graph);
