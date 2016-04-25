@@ -32,7 +32,7 @@ public:
 	/** Default destructor */
 	virtual ~GraphConnectedWeighted();
 
-
+	void GenerateAsMatrix();
 	size_type getNumberNodes() const
 	{
 		return _numberNodes;
