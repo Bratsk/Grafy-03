@@ -25,31 +25,60 @@ int main(int argc, char ** argv)
 		{
 		case 1:;
 			{
-				constexpr size numberNodes = 7;
-				int ** adjacencyMatrix = new int *[numberNodes];
-				//reading matrix from file
-				std::ifstream fromFile("adjacencyMatrix.txt", std::ios_base::in);
-				char comma; //comma only reads the separating character
-				for(int i = 0; i < numberNodes; i++)
-				{
-					adjacencyMatrix[i] = new int[numberNodes];
-					//reading file
-					for (int j = 0; j < numberNodes; j++)
-					{
-						fromFile >> adjacencyMatrix[i][j] >> comma;
-					}
+                	unsigned secondOption;
+			std::cout
+	                << "1	: generuj graf z pliku\n"
+	                << "2	: generuj graf podajac ilosc wierzcholkow i krawedzi\n";
+	                std::cin >> secondOption;
+
+	                switch(secondOption)
+			{
+	
+			case 1:;{
+		                    constexpr size numberNodes = 7;
+		                    int ** adjacencyMatrix = new int *[numberNodes];
+		                    //reading matrix from file
+		                    std::ifstream fromFile("adjacencyMatrix.txt", std::ios_base::in);
+		                    char comma; //comma only reads the separating character
+		                    for(int i = 0; i < numberNodes; i++)
+		                    {
+		                        adjacencyMatrix[i] = new int[numberNodes];
+		                        //reading file
+		                        for (int j = 0; j < numberNodes; j++)
+		                        {
+		                            fromFile >> adjacencyMatrix[i][j] >> comma;
+		                        }
+		                    }
+		                    std::cout << "sucessfully read matrix from file" << std::endl;
+		                    //read matrixs
+		                    for(int i = 0; i < numberNodes; i++)
+		                    {
+		                        for(int j = i; j < numberNodes; j++)
+		                        {
+		                            adjacencyMatrix[j][i] = adjacencyMatrix[i][j];
+		                        }
+		                    }
+		                    graph = new GraphConnectedWeighted(adjacencyMatrix, numberNodes);
+		                    std::cout << *graph << std::endl;
+		                    break;
+	                }
+	
+	                case 2:;{
+		                    int numberVertices, numberEdges;
+		                    std::cout << "Podaj liczbe krawedzi\n";
+		                    std::cin >> numberVertices;
+		                    std::cout << "Podaj liczbe krawedzi\n";
+		                    std::cin >> numberEdges;
+		                    while(numberVertices<numberVertices){
+		                        std::cout << "Za mala liczba krawedzi. Podaj wieksza liczbe\n";
+		                        std::cin >> numberEdges;
+		                    }
+		                    graph = new GraphConnectedWeighted(numberVertices, numberEdges);
+		                    std::cout << *graph << std::endl;
+		                    break;
+	                	}
+	
 				}
-				std::cout << "sucessfully read matrix from file" << std::endl;
-				//read matrixs
-				for(int i = 0; i < numberNodes; i++)
-				{
-					for(int j = i; j < numberNodes; j++)
-					{
-						adjacencyMatrix[j][i] = adjacencyMatrix[i][j];
-					}
-				}
-				graph = new GraphConnectedWeighted(adjacencyMatrix, numberNodes);
-				std::cout << *graph << std::endl;
 				break;
 			}
 		case 2:;
