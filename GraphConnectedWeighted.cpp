@@ -36,13 +36,13 @@ GraphConnectedWeighted::GraphConnectedWeighted(int ** adjacencyMatrix, const siz
 	}
 }
 
-GraphConnectedWeighted::GraphConnectedWeighted(const size_type n, const size_type l): 
-	_numberNodes(0), _numberEdges(0),
+GraphConnectedWeighted::GraphConnectedWeighted(const size_type n, const size_type l):
+	_numberNodes(n), _numberEdges(l),
 	_adjacencyMatrix(nullptr),
-	_distanceMatrix(nullptr), 
+	_distanceMatrix(nullptr),
 	_minimalSpanningTree(nullptr)
 {
-	
+    GenerateAsMatrix();
 }
 
 GraphConnectedWeighted::GraphConnectedWeighted(const size_type n, const float p): 
@@ -70,7 +70,45 @@ void GraphConnectedWeighted::toLatex() const
 {
 	return;
 }
+void GraphConnectedWeighted::GenerateAsMatrix(){
 
+    int wage;
+    _adjacencyMatrix = new int*[_numberNodes];
+    for (size_type i = 0; i < _numberNodes; i++)
+        _adjacencyMatrix[i] = new int[_numberNodes];
+
+    int edge = _numberEdges;
+
+    for(int i=0;i <_numberNodes;i++)
+        for(int j=0;j<_numberNodes;j++)
+            _adjacencyMatrix[i][j] = 0;
+
+    for (int i=0;i<_numberNodes-1;i++){
+        wage  = rand()%10 + 1;
+        _adjacencyMatrix[i][i+1] = wage;
+        _adjacencyMatrix[i+1][i] = wage;
+        edge--;
+    }
+
+    wage  = rand()%10 + 1;
+    _adjacencyMatrix[0][_numberNodes-1] = wage;
+    _adjacencyMatrix[_numberNodes-1][0] = wage;
+    edge--;
+
+    while(edge>0)
+    {
+        wage  = rand()%10 + 1;
+        int i = rand()%(_numberNodes-1);
+        int j = (rand()%(_numberNodes-i-1))+(i+1);
+        //std::cout << i << ", " << j << "\n";
+        if(_adjacencyMatrix[i][j]==0){
+            _adjacencyMatrix[i][j] = wage;
+            _adjacencyMatrix[j][i] = wage;
+            edge--;
+            //std::cout << edge << "\n";
+        }
+    }
+}
 void GraphConnectedWeighted::dijkstra(size_type sourceNode, int * resultArray) const
 {
 	typedef unsigned node_type;
