@@ -2,29 +2,7 @@
 
 #include "Graph.h"
 #include <iostream>
-struct node
-{
-	typedef char name_type;
-	typedef unsigned id_type;
-	typedef unsigned distance_type;
-	typedef char source_node_type;
-	name_type name; //symbolic name of node
-	id_type id; //position in deque
-	distance_type distance; //distance source
-	source_node_type sourceNode; //prevous node width shortest path
-	
-};
 
-struct edge
-{
-	typedef unsigned node_type;
-	typedef unsigned weight_type;
-	typedef unsigned set_type;
-	node_type a;
-	node_type b;
-	weight_type weight;
-	set_type set;
-};
 
 bool distanceLess(const node a, const node b);
 bool edgeWeight(const edge * e1, const edge * e2);

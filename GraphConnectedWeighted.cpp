@@ -5,7 +5,7 @@
 #include <deque>
 #include <utility>
 #include <list>
-#include <algorithm>
+#include "LatexDocument.h"
 
 
 bool distanceLess(const node a, const node b)
@@ -150,6 +150,7 @@ void GraphConnectedWeighted::dijkstra(size_type sourceNode, int * resultArray) c
 	if(resultArray)
 		for(auto i = 0; i < _numberNodes; i++)
 			resultArray[i] = distanceVector[i].distance;
+	LatexDocument::printDistanceVector(distanceVector, _adjacencyMatrix);
 	return;
 }
 
@@ -339,6 +340,7 @@ void GraphConnectedWeighted::minimalSpanningTree() const
 				<< (*j)->set << std::endl;
 		}
 	}
+	LatexDocument::printSpanningTree(edgeList, sets[0], _adjacencyMatrix, _numberNodes);
 	//delete memory
 	for (std::list<edge*>::iterator i = edgeList.begin(); i != edgeList.end(); ++i)
 	{
